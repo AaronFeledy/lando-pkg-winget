@@ -78,8 +78,9 @@ if ! GITHUB_TOKEN=$(get_github_token "${1:-}"); then
 fi
 
 # Construct the URLs using the provided version
-LANDO_ARM64_URL="https://github.com/lando/core/releases/download/v${VERSION}/lando-win-arm64-v${VERSION}.exe"
-LANDO_AMD64_URL="https://github.com/lando/core/releases/download/v${VERSION}/lando-win-x64-v${VERSION}.exe"
+LANDO_ARM64_URL="https://github.com/lando/core/releases/download/v${VERSION}/lando-win-arm64-v${VERSION}-slim.exe"
+LANDO_AMD64_URL="https://github.com/lando/core/releases/download/v${VERSION}/lando-win-x64-v${VERSION}-slim.exe"
+
 
 # Function to install Komac
 install_komac() {
@@ -106,7 +107,7 @@ install_komac() {
             if command_exists apt-get; then
                 log "Debian-based system detected, attempting to install via .deb package..."
                 TEMP_DEB="$(mktemp)"
-                curl -L "https://github.com/russellbanks/Komac/releases/download/v2.6.0/komac_2.6.0-1_amd64.deb" -o "$TEMP_DEB"
+                curl -L "https://github.com/russellbanks/Komac/releases/download/v2.8.0/komac_2.8.0-1_amd64.deb" -o "$TEMP_DEB"
                 sudo dpkg -i "$TEMP_DEB"
                 rm -f "$TEMP_DEB"
                 if command_exists komac; then
@@ -156,11 +157,12 @@ log "Using Komac to update Lando.Lando package..."
 TEMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TEMP_DIR"' EXIT
 
-# First run Komac update without submitting to get the changes
+# Run Komac update
 if ! komac update Lando.Lando \
     --token "${GITHUB_TOKEN}" \
     --version "${VERSION}" \
-    --urls "${LANDO_ARM64_URL}","${LANDO_AMD64_URL}" \
+    --urls "${LANDO_ARM64_URL}" \
+    --urls "${LANDO_AMD64_URL}" \
     --output "$TEMP_DIR"; then
     log "Failed to generate package update"
     exit 1
