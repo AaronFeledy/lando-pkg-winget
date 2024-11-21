@@ -160,41 +160,8 @@ trap 'rm -rf "$TEMP_DIR"' EXIT
 if ! komac update Lando.Lando \
     --token "${GITHUB_TOKEN}" \
     --version "${VERSION}" \
-    --urls "${LANDO_ARM64_URL}" "${LANDO_AMD64_URL}" \
+    --urls "${LANDO_ARM64_URL}","${LANDO_AMD64_URL}" \
     --output "$TEMP_DIR"; then
     log "Failed to generate package update"
     exit 1
 fi
-
-# Show the changes
-log "Package changes:"
-echo "----------------------------------------"
-if [ -d "$TEMP_DIR" ] && [ -n "$(find "$TEMP_DIR" -type f -name "*.yaml")" ]; then
-    # Use git diff coloring if available
-    if command_exists git; then
-        find "$TEMP_DIR" -type f -name "*.yaml" -exec git diff --no-index --color /dev/null {} \;
-    else
-        find "$TEMP_DIR" -type f -name "*.yaml" -exec cat {} \;
-    fi
-else
-    log "No changes detected"
-    exit 0
-fi
-echo "----------------------------------------"
-
-# Ask for confirmation
-if confirm "Would you like to submit these changes?"; then
-    log "Submitting changes..."
-    if ! komac update Lando.Lando \
-        --token "${GITHUB_TOKEN}" \
-        --version "${VERSION}" \
-        --urls "${LANDO_ARM64_URL}" "${LANDO_AMD64_URL}" \
-        --submit; then
-        log "Failed to submit package update"
-        exit 1
-    fi
-    log "Update process completed successfully"
-else
-    log "Update cancelled"
-    exit 0
-fi 
