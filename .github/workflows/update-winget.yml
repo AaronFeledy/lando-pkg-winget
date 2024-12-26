@@ -1,0 +1,31 @@
+name: Update Lando WinGet Package
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update:
+    name: Update Lando Package
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Update Package
+      uses: michidk/winget-updater@v1
+      with:
+        komac-token: ${{ secrets.GITHUB_TOKEN }}
+        identifier: "Lando.Lando"
+        repo: "lando/core"
+        url: |
+          https://github.com/lando/core/releases/download/v{VERSION}/lando-win-arm64-v{VERSION}-slim.exe,
+          https://github.com/lando/core/releases/download/v{VERSION}/lando-win-x64-v{VERSION}-slim.exe
+
+  cleanup:
+    name: Cleanup branches
+    needs: update
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Run Komac
+      uses: michidk/run-komac@latest
+      with:
+        args: 'cleanup --only-merged --token=${{ secrets.GITHUB_TOKEN }}'
