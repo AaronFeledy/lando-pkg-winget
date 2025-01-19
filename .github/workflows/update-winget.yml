@@ -9,11 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Update Lando Package
-      uses: michidk/run-komac@latest
+    - name: Update Package
+      uses: michidk/winget-updater@latest
       with:
-        komac-version: "2.6.0"
-        args: update Lando.Lando --token=${{ secrets.GITHUB_TOKEN }} --version=${{ env.VERSION }} --urls=https://github.com/lando/core/releases/download/v{VERSION}/lando-win-x64-v{VERSION}-slim.exe --urls=https://github.com/lando/core/releases/download/v{VERSION}/lando-win-arm64-v{VERSION}-slim.exe
+        komac-token: ${{ secrets.GITHUB_TOKEN }}
+        identifier: "Lando.Lando"
+        repo: "lando/core"
+        url: '"https://github.com/lando/core/releases/download/v{VERSION}/lando-win-x64-v{VERSION}-slim.exe","https://github.com/lando/core/releases/download/v{VERSION}/lando-win-arm64-v{VERSION}-slim.exe"'
 
   cleanup:
     name: Cleanup branches
