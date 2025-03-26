@@ -17,14 +17,3 @@ jobs:
         repo: "lando/core"
         url: '"https://github.com/lando/core/releases/download/v{VERSION}/lando-win-x64-v{VERSION}.exe https://github.com/lando/core/releases/download/v{VERSION}/lando-win-arm64-v{VERSION}.exe"'
         komac-version: 2.11.1
-
-  cleanup:
-    name: Cleanup branches
-    needs: update
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Run Komac
-      uses: michidk/run-komac@latest
-      with:
-        args: 'cleanup --only-merged --token=${{ secrets.GITHUB_TOKEN }}'
