@@ -15,7 +15,7 @@ jobs:
         komac-token: ${{ secrets.GITHUB_TOKEN }}
         identifier: "Lando.Lando"
         repo: "lando/core"
-        url: "'https://github.com/lando/core/releases/download/v{VERSION}/lando-win-x64-v{VERSION}.exe https://github.com/lando/core/releases/download/v{VERSION}/lando-win-arm64-v{VERSION}.exe'"
+        url: '"https://github.com/lando/core/releases/download/v{VERSION}/lando-win-x64-v{VERSION}.exe https://github.com/lando/core/releases/download/v{VERSION}/lando-win-arm64-v{VERSION}.exe"'
         komac-version: 2.9.0
 
   cleanup:
