@@ -9,6 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+    - name: Configure Git
+      run: |
+        git config --global user.name "${{ github.repository_owner }}"
+        git config --global user.email "${{ github.repository_owner }}@users.noreply.github.com"
+      
     - name: Update Package
       uses: michidk/winget-updater@latest
       with:
