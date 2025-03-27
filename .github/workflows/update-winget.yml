@@ -12,9 +12,8 @@ jobs:
     - name: Update Package
       uses: michidk/winget-updater@latest
       with:
-        komac-token: ${{ secrets.GITHUB_TOKEN }}
+        komac-token: ${{ secrets.KOMAC_TOKEN }}
         identifier: "Lando.Lando"
         repo: "lando/core"
-        custom-fork-owner: "AaronFeledy"
         url: '"https://github.com/lando/core/releases/download/v{VERSION}/lando-win-x64-v{VERSION}.exe https://github.com/lando/core/releases/download/v{VERSION}/lando-win-arm64-v{VERSION}.exe"'
         komac-version: 2.11.1
